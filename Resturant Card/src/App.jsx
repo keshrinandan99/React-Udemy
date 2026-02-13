@@ -16,6 +16,7 @@ export const App=()=>{
       <main className="menu">
         <Header className="header"/>
         <h2>Our Menu</h2>
+        <p>All authentic itallian cusine at one place.</p>
           <div className="pizzas">
             
             {pizzaData.map((a)=>(
