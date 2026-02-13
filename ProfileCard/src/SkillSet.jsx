@@ -2,14 +2,18 @@ import React from 'react'
 
 function SkillSet(props) {
   return (
-    <div>
+    <>
 
     <div className='skill' style={{background:props.color}}>
         {props.content}
-        {props.icon}
+        <span>
+        {props.icon==="intermediate" && '👍'}
+        {props.icon==="beginner" && '👩‍🦲'}
+        {props.icon==="advanced" && '💪'}</span>
+       
 
     </div>
-    </div>
+    </>
   )
 }
 
