@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 export default function App() {
   const [step,setStep]=useState(1);
-  const [counter,setCounter]=useState(1)
+  const [counter,setCounter]=useState(0)
   const date=new Date();
   date.setDate(date.getDate()+counter);
 
@@ -17,29 +17,41 @@ export default function App() {
     setCounter((s)=>s+step);
   }
   const handleCounterDecrement=()=>{
-    setCounter((s)=>s-1)
+    setCounter((s)=>s-step)
+  }
+  function  handleReset(){
+    setCounter(0);
+    setStep(1);
+
   }
     return (
     <>
     <div >
       <div className='header'>
-        <button onClick={handleStepIncrement} className='btn'>+</button>
+      <input type="range" min="1" max="10" value={step} onChange={(e)=>setStep(Number(e.target.value))}/>
         <h1>Step:{step}</h1>
-        <button onClick={handleStepDecrement} className='btn'>-</button>
+      
       </div>
       <div className='header'>
-        <button onClick={handleCounterIncrement}className='btn'>+</button>
-        <h1>Counter:{counter}</h1>
-        <button onClick={handleCounterDecrement} className='btn'>-</button>
+        <input type='text' value={counter} onChange={(e)=>setCounter(Number(e.target.value))}/>
       </div>
 
       <p style={{display:"flex",justifyContent:"center"}}>
       <span>
         {counter===0?"Today is ":counter>0?`${counter} day from now is `:`${-counter} days ago is `}
       </span>
-      
-       {date.toDateString()} </p>
+       {date.toDateString()} 
+       
+       </p>
       </div>
+      {counter!==0 && step!==1 && (<div style={{display:'flex', justifyContent:'center'}}>
+         <button onClick={handleReset}>
+          Reset
+        </button>
+      </div>) }
+      
+      
+      
     </>
   )
 }
