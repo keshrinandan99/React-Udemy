@@ -19,11 +19,17 @@ function App() {
   const handleSelect=(id)=>{
     setItems((items)=>items.map((item)=>item.id===id?{...item,packed:!item.packed}:item))
   }
+  const handleClearList=()=>{
+    const confirm=window.confirm("Are you sure you want to delete all items?");
+    if(confirm)setItems([]);
+  }
   return (
     <div>
       <Logo/>
       <Form onAddItem={handleAddItem}/>
-      <PackingList items={items} onDeleteItem={handleDelete} onSelect={handleSelect}/>
+      <PackingList 
+        handleClearList={handleClearList}
+      items={items} onDeleteItem={handleDelete} onSelect={handleSelect}/>
       <Stats items={items}/>
 
     </div>
@@ -75,13 +81,41 @@ function Form({onAddItem}){
   )
 
 }
-function PackingList({items,onDeleteItem,onSelect}){
+function PackingList({items,onDeleteItem,onSelect,handleClearList}){
+  const [sortBy,setSortBy]=useState("input");
+  let sortedItems;
+  if(sortBy=="input"){
+    sortedItems=items;
+  }
+  if(sortBy=="alphabatically"){
+    sortedItems=items.slice().sort((a,b)=>a.description.localeCompare(b.description));
+  }
+  if(sortBy=="packed"){
+    sortedItems=items.slice().sort((a,b)=>Number(a.packed)-Number(b.packed))
+  }
+ 
   return (
-    
+    <>
+    <div>
+
       <ul className='list'>
         
-        {items.map((item)=> <Items onSelect= {onSelect} onDeleteItem={onDeleteItem} key={item.id} description={item.description} quantity={item.quantity} packed={item.packed} id={item.id}/>)}
+        {sortedItems.map((item)=> <Items onSelect= {onSelect} onDeleteItem={onDeleteItem} key={item.id} description={item.description} quantity={item.quantity} packed={item.packed} id={item.id}/>)}
       </ul>
+
+     <div className='actions aligning'>
+      <select value={sortBy} onChange={(e)=>setSortBy(e.target.value)}>
+        <option value="input">Sort by input order</option>
+        <option value="alphabatically">Sort Alphabatically </option>
+        <option value="packed">Sort by packed order</option>
+
+      </select>
+     <button onClick={()=>handleClearList()}>Clear list</button>
+     </div>
+
+     </div>
+      
+    </>
     
   )
 
@@ -116,7 +150,7 @@ function Stats({items}){
 
   return (
     <footer className='stats'>
-      You've {num} items on the list and you packed {packedNumber} ({percentage}%)
+      You've {num} items on the list and you packed {packedNumber} ({Math.round(percentage)}%)
     </footer>
   )
 
