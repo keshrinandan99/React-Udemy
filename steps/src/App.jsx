@@ -8,6 +8,12 @@ const messages = [
 export default function App (){
   const[step,setStep]=useState(1);
   const[isOpen,setIsOpen]=useState(true);
+  const handlePrev=()=>{
+    setStep(step>1?step-1:1)
+  }
+  const handleNext=()=>{
+    setStep(step<3?step+1:1)
+  }
   
   return (
     <>
@@ -28,15 +34,26 @@ export default function App (){
 
       <p className='message'>Step {step}:{messages[step-1]}</p>
       <div className='buttons'>
-       <button onClick={()=>setStep(step>1?step-1:1)} className='button' style={{background:"#7950f2", color:"#fff"}}>Previous</button>
-       <button onClick={()=>setStep(step<3?step+1:3)} className='button' style={{background:"#7950f2", color:"#fff"}}>Next</button>
-      
 
+      <Button background={'#7950f2'} color={'#fff'} onClick={handlePrev} children ><span>👈</span>Previous </Button>
+      <Button background={'#7950f2'} color={'#fff'} text={'Next👉'} onClick={handleNext} children>Next
+        <span>👉</span> 
+      </Button>
+       {/* <button onClick={()=>setStep(step>1?step-1:1)} className='button' style={{background:"#7950f2", color:"#fff"}}>Previous</button>
+       <button onClick={()=>setStep(step<3?step+1:3)} className='button' style={{background:"#7950f2", color:"#fff"}}>Next</button> */}
       </div>
 
     </div>)}
     
     </>
     
+  )
+}
+
+function Button({background,color,onClick,children}){
+  return (
+  <button style={{backgroundColor:background, color:color}} onClick={onClick}>
+    {children}
+  </button>
   )
 }
